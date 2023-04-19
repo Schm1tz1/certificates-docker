@@ -1,5 +1,5 @@
 ### OpenSSL Scripts for CA and Local Certificate Creation in Docker
-In this repo we create a local CA and a TLS certificate trusted by this CA. You only need to trust the CA so no need to update your clients everytime the certificate is renewed. Java truest-/keystores will be created automatically in addition.
+In this repo we create a local CA and a TLS certificate trusted by this CA. You only need to trust the CA so no need to update your clients everytime the certificate is renewed. Java trust-/keystores will be created automatically in addition.
 
 We are using a Docker-based approach to ensure we are using the correct versions (JDK 11, OpenSSL 3).
 
