@@ -63,3 +63,9 @@ schmitzi/openssl-alpine-j11:3.1.7
 | PASSWD  | Password for keystores / containers | changeme! |
 | DAYS_CA | Validity for CA in days | 3650 |
 | DAYS | Validity for certificates in days | 389 |
+
+* Please note: Only new certificates will be created in th eexisting directory - if a .crt file exists already, it will not be overwritten !
+* How to provide an existing CA - simply put the following files in your certificate/output directory
+    * `ca-root.crt`: certificate im PEM format
+    * `ca-root.key`: private key (preferrably unencrypted)
+    * `ca-root.pem`: (full-chain) PEM of the private key and CA certificate(s)
