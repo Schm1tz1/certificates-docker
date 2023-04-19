@@ -1,4 +1,4 @@
-### OpenSSL Scripts for CA and Local Certificate Creation in Docker
+### OpenSSL-based Certificate Creation in Docker
 This repo is used to create certificatges by a trusted CA (either provided or generated here). Configuration will be completely done based on a Jinja2-template and a JSON-configuration that is used for the certificate creation. Several key types, Java trust-/keystores will be created automatically in addition.
 
 We are using a Docker-based approach to ensure we are using the correct versions (JDK 11, OpenSSL 3).
