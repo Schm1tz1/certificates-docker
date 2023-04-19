@@ -1,0 +1,25 @@
+{
+    "certs": [
+        {
+            "fileName": "ca-root.cnf",
+            "country": "DE",
+            "org": "My Org",
+            "locality": "Berlin",
+            "CN": "me.at.home",
+            "CA": "true"
+        },
+        {
+            "fileName": "test.cnf",
+            "country": "DE",
+            "org": "My Org",
+            "locality": "Berlin",
+            "CN": "me.at.home",
+            "CA": "false",
+            "SANs": [
+                {"name": "127.0.0.1"},
+                {"name": "127.0.1.1"},
+                {"name": "10.0.0.1"}
+            ]
+        }
+    ]
+}
