@@ -1,7 +1,7 @@
 ### OpenSSL-based Certificate Creation in Docker
 This repo is used to create certificates by a trusted CA (either provided or generated here). Configuration will be completely done based on a Jinja2-template and a JSON-configuration that is used for the certificate creation. Several key types, Java trust-/keystores will be created automatically in addition.
 
-We are using a Docker-based approach to ensure we are using the correct versions (JDK 11, OpenSSL 3).
+We are using a Docker-based approach to ensure that the correct versions are used (e.g. JDK 11, OpenSSL 3).
 
 Typical issues / errors:
 * max. validity as of 2020-09-01 is 389 days (default). Higher values will have issues on certificate validation. 
