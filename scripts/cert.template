@@ -41,6 +41,14 @@ extendedKeyUsage = serverAuth, clientAuth
 subjectAltName = @alt_names
 
 [ alt_names ]
+{% set san_list = [] -%}
+{% if (CN_as_SAN == 'true' or CN_as_SAN is not defined) -%}
+{% do san_list.append(CN) -%}
+{% endif -%}
 {% for san in SANs -%}
-DNS.{{loop.index}}={{san.name}}
-{% endfor %}{% endif %}
+    {% do san_list.append(san.name) -%}
+{% endfor -%}
+{% for dns in san_list -%}
+DNS.{{loop.index}}={{dns}}
+{% endfor %}
+{% endif %}

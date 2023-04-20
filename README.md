@@ -9,23 +9,22 @@ Typical issues / errors:
 
 Steps to create you certificate (with docker):
 * Look at the [examples](./examples) and try it!
-* Create a JSON-file `hosts.json` that contains one object for each certificate in an array `certs`. Example:
+* Create a JSON-file `hosts.json` that contains one `global` object with variables that apply to all certificates and a list of objects for each certificate in `certs`. Example:
 ```json
 {
+    "global": {
+        "country": "DE",
+        "org": "My Org",
+        "locality": "Berlin"
+    },
     "certs": [
         {
-            "fileName": "ca-root.cnf",
-            "country": "DE",
-            "org": "My Org",
-            "locality": "Berlin",
+            "fileName": "ca-root",
             "CN": "me.at.home",
             "CA": "true"
         },
         {
-            "fileName": "test.cnf",
-            "country": "DE",
-            "org": "My Org",
-            "locality": "Berlin",
+            "fileName": "test",
             "CN": "me.at.home",
             "CA": "false",
             "SANs": [
@@ -40,13 +39,14 @@ Steps to create you certificate (with docker):
 Description of the fields:
 | Field | Description |
 |---|---|
-| fileName  | Output filename for the certificate configuration (*.cnf). CSR/Certificates/Keys will have the suffix .crt/.csr/.pem and so on and the prefix will also be used as an alias in keystores |
-| country | Certificate countryName |
-| org | Certificate organizationName | 
-| locality | Certificate localityName (e.g. location, city...) |
-| CN | Certificate commonName (Should match host name !) |
-| CA | Is this certificate a CA - true/false |
+| fileName  | Output base filename for the certificate configuration IF different from the CN. Config/CSR/Certificates/Keys will have the suffix .cnf/.crt/.csr/.pem and so on and the base name will also be used as an alias in keystores. (default: value of CN) |
+| country | Certificate countryName (default: DE) |
+| org | Certificate organizationName (default: Schm1tz1) | 
+| locality | Certificate localityName (e.g. location, city...) (default: Berlin) |
+| CN | Certificate commonName (Should match host name !) (default: schm1tz1.github.io) |
+| CA | Is this certificate a CA - true/false (default: false) |
 | SANs | List of alternative IPs / hostnames to be added as Subject Alternative Names |
+| CN_as_SAN | Add CN as SAN in addition (required by many clients/browsers) - true/false (default: true) |
 
 * Pull the docker image (from docker hub) or build locally with `./build_docker_image.sh`
 * Run the docker image - you need to mount the `hosts.json` to `/opt/certs/hosts.json` and a destination directory where the configs and certificates will be placed to `/opt/certs/current` - e.g.:
