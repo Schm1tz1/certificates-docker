@@ -4,7 +4,7 @@ LABEL summary="Certificate Builder based on OpenSSL3/Alpine"
 
 RUN apk update \
   && apk upgrade \
-  && apk add --update bash openjdk11-jre-headless~11.0 openssl3 py3-jinja2\
+  && apk add --update bash openjdk11-jre-headless~11.0 openssl3 py3-jinja2 py3-yaml\
   && rm -rf /var/cache/apk/*
 
 RUN mkdir -p /opt/certs
