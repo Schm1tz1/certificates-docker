@@ -1,5 +1,5 @@
 ### OpenSSL-based Certificate Creation in Docker
-This repo is used to create certificates by a trusted CA (either provided or generated here). Configuration will be completely done based on a Jinja2-template and a JSON-configuration that is used for the certificate creation. Several key types, Java trust-/keystores will be created automatically in addition.
+This repo is used to create certificates by a trusted CA (either provided or generated here). Configuration will be completely done based on a Jinja2-template and a host configuration in YAML or JSON that is used for the certificate creation. Several key types, Java trust-/keystores will be created automatically in addition.
 
 We are using a Docker-based approach to ensure that the correct versions are used (e.g. JDK 11, OpenSSL 3).
 
@@ -9,7 +9,25 @@ Typical issues / errors:
 
 Steps to create you certificate (with docker):
 * Look at the [examples](./examples) and try it!
-* Create a JSON-file `hosts.json` that contains one `global` object with variables that apply to all certificates and a list of objects for each certificate in `certs`. Example:
+* Create a YAML/JSON-file `hosts.txt` that contains one `global` object with variables that apply to all certificates and a list of objects for each certificate in `certs`. Example:
+```yaml
+global:
+  country: DE
+  org: My Org
+  locality: Berlin
+certs:
+  - fileName: ca-root
+    CN: me.at.home
+    CA: "true"
+  - fileName: test
+    CN: me.at.home
+    CA: "false"
+    SANs:
+      - name: 127.0.0.1
+      - name: 127.0.1.1
+      - name: 10.0.0.1
+```
+OR
 ```json
 {
     "global": {
@@ -26,11 +44,18 @@ Steps to create you certificate (with docker):
         {
             "fileName": "test",
             "CN": "me.at.home",
+            "CN_as_SAN": "false",
             "CA": "false",
             "SANs": [
                 {"name": "127.0.0.1"},
                 {"name": "127.0.1.1"},
                 {"name": "10.0.0.1"}
+            ]
+        },
+        {
+            "CN": "me.at.home",
+            "SANs": [
+                {"name": "10.0.0.2"}
             ]
         }
     ]
@@ -49,10 +74,10 @@ Description of the fields:
 | CN_as_SAN | Add CN as SAN in addition (required by many clients/browsers) - true/false (default: true) |
 
 * Pull the docker image (from docker hub) or build locally with `./build_docker_image.sh`
-* Run the docker image - you need to mount the `hosts.json` to `/opt/certs/hosts.json` and a destination directory where the configs and certificates will be placed to `/opt/certs/current` - e.g.:
+* Run the docker image - you need to mount the `hosts.txt` to `/opt/certs/hosts.txt` and a destination directory where the configs and certificates will be placed to `/opt/certs/current` - e.g.:
 ```bash
 docker run --rm \
--v $(pwd)/hosts.json:/opt/certs/hosts.json \
+-v $(pwd)/hosts.txt:/opt/certs/hosts.txt \
 -v $(pwd)/certs:/opt/certs/current \
 schmitzi/openssl-alpine-j11:3.1.7
 ```

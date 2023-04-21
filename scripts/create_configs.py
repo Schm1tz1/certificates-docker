@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 import jinja2
-import json
+import yaml
 
 # Read hosts input and extract global settings
-with open('./hosts.json') as json_file:
-    hosts = json.load(json_file)
+with open('./hosts.txt') as input_file:
+    hosts = yaml.load(input_file, Loader=yaml.FullLoader)
 globals = hosts['global'] if 'global' in hosts else {}
 
 templateLoader = jinja2.FileSystemLoader(searchpath="./")

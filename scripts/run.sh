@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 echo "Checking for mandatory input files..."
-if [ ! -e /opt/certs/hosts.json ] ; then 
-    echo "Mandatory file /opt/certs/hosts.json is missing!"
+if [ ! -e /opt/certs/hosts.txt ] ; then 
+    echo "Mandatory file /opt/certs/hosts.txt is missing!"
     exit 1
 fi
 
