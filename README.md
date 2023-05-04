@@ -89,7 +89,7 @@ schmitzi/openssl-alpine-j11:3.1.7
 | DAYS_CA | Validity for CA in days | 3650 |
 | DAYS | Validity for certificates in days | 389 |
 
-* Please note: Only new certificates will be created in th eexisting directory - if a .crt file exists already, it will not be overwritten !
+* Please note: Only new certificates will be created in th existing directory - if a .crt file exists already, it will not be overwritten !
 * How to provide an existing CA - simply put the following files in your certificate/output directory
     * `ca-root.crt`: certificate im PEM format
     * `ca-root.key`: private key (preferrably unencrypted)
