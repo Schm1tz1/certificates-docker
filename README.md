@@ -9,7 +9,7 @@ Typical issues / errors:
 
 Steps to create you certificate (with docker):
 * Look at the [examples](./examples) and try it!
-* Create a YAML/JSON-file `hosts.txt` that contains one `global` object with variables that apply to all certificates and a list of objects for each certificate in `certs`. You **can** create wildcard certificated, be aware that asterisc * is a special character so it needs to be in double quotes in YAML. Example:
+* Create a YAML/JSON-file `hosts.txt` that contains one `global` object with variables that apply to all certificates and a list of objects for each certificate in `certs`. You **can** create wildcard certificates, be aware that asterisk * is a special character so it needs to be in double quotes in YAML. Example:
 ```yaml
 global:
   country: DE
