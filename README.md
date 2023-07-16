@@ -52,15 +52,15 @@ OR
             "CN_as_SAN": "false",
             "CA": "false",
             "SANs": [
-                {"name": "127.0.0.1"},
-                {"name": "127.0.1.1"},
-                {"name": "10.0.0.1"}
+                {"name": "localhost"},
+                {"ip": "127.0.1.1"},
+                {"ip": "10.0.0.1"}
             ]
         },
         {
             "CN": "me.at.home",
             "SANs": [
-                {"name": "10.0.0.2"}
+                {"ip": "10.0.0.2"}
             ]
         }
     ]
@@ -84,7 +84,7 @@ Description of the fields:
 docker run --rm \
 -v $(pwd)/hosts.txt:/opt/certs/hosts.txt \
 -v $(pwd)/certs:/opt/certs/current \
-schmitzi/openssl-alpine-j11:3.1.8
+schmitzi/openssl-alpine-j11:1.0.0
 ```
 * The following optional parameters can be provided as environment variables using `-e`:
 
