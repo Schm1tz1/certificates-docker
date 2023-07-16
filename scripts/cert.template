@@ -42,13 +42,22 @@ subjectAltName = @alt_names
 
 [ alt_names ]
 {% set san_list = [] -%}
+{% set san_ip_list = [] -%}
 {% if (CN_as_SAN == 'true' or CN_as_SAN is not defined) -%}
 {% do san_list.append(CN) -%}
 {% endif -%}
 {% for san in SANs -%}
+    {% if san.name is defined -%}
     {% do san_list.append(san.name) -%}
+    {% endif -%}
+    {% if san.ip is defined -%}
+    {% do san_ip_list.append(san.ip) -%}
+    {% endif -%}
 {% endfor -%}
 {% for dns in san_list -%}
 DNS.{{loop.index}}={{dns}}
-{% endfor %}
+{% endfor -%}
+{% for ip in san_ip_list -%}
+IP.{{loop.index}}={{ip}}
+{% endfor -%}
 {% endif %}

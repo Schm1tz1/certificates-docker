@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 LABEL maintainer="roman.schmitz@gmail.com"
 LABEL summary="Certificate Builder based on OpenSSL3/Alpine"
 

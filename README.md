@@ -28,9 +28,9 @@ certs:
     CN: me.at.home
     CA: "false"
     SANs:
-      - name: 127.0.0.1
-      - name: 127.0.1.1
-      - name: 10.0.0.1
+      - name: localhost
+      - ip: 127.0.1.1
+      - ip: 10.0.0.1
 ```
 OR
 ```json
@@ -75,7 +75,7 @@ Description of the fields:
 | locality | Certificate localityName (e.g. location, city...) (default: Berlin) |
 | CN | Certificate commonName (Should match host name !) (default: schm1tz1.github.io) |
 | CA | Is this certificate a CA - true/false (default: false) |
-| SANs | List of alternative IPs / hostnames to be added as Subject Alternative Names |
+| SANs | List of alternative IPs / hostnames to be added as Subject Alternative Names by hostname (name) or IP (ip)|
 | CN_as_SAN | Add CN as SAN in addition (required by many clients/browsers) - true/false (default: true) |
 
 * Pull the docker image (from docker hub) or build locally with `./build_docker_image.sh`
@@ -84,7 +84,7 @@ Description of the fields:
 docker run --rm \
 -v $(pwd)/hosts.txt:/opt/certs/hosts.txt \
 -v $(pwd)/certs:/opt/certs/current \
-schmitzi/openssl-alpine-j11:3.1.7
+schmitzi/openssl-alpine-j11:3.1.8
 ```
 * The following optional parameters can be provided as environment variables using `-e`:
 
