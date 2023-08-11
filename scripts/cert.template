@@ -1,6 +1,8 @@
 [ dn ]
 countryName = {{ country | default("DE") }}
 organizationName = {{ org | default("Schm1tz1") }}
+organizationalUnitName = {{ orgUnit | default("IT") }}
+stateOrProvinceName = {{ state | default("BER") }}
 localityName = {{ locality | default("Berlin") }}
 commonName = {{ CN | default("schm1tz1.github.io") }}
 {% if CA == 'true' %}

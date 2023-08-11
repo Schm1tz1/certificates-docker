@@ -14,6 +14,8 @@ Steps to create you certificate (with docker):
 global:
   country: DE
   org: My Org
+  orgUnit: Special Unit
+  state: BER
   locality: Berlin
 certs:
   - fileName: ca-root
@@ -71,7 +73,9 @@ Description of the fields:
 |---|---|
 | fileName  | Output base filename for the certificate configuration IF different from the CN. Config/CSR/Certificates/Keys will have the suffix .cnf/.crt/.csr/.pem and so on and the base name will also be used as an alias in keystores. (default: value of CN) |
 | country | Certificate countryName (default: DE) |
+| state | Certificate stateOrProvinceName (default: BER) |
 | org | Certificate organizationName (default: Schm1tz1) | 
+| orgUnit | Certificate organizationalUnitName (default: IT) | 
 | locality | Certificate localityName (e.g. location, city...) (default: Berlin) |
 | CN | Certificate commonName (Should match host name !) (default: schm1tz1.github.io) |
 | CA | Is this certificate a CA - true/false (default: false) |
