@@ -8,31 +8,35 @@ ROOTCA="ca-root"
 
 for i in ${CERTDIR}/*.cnf; do
   CERTNAME=${i%.*}
-  if [ "${CERTNAME}" == "${CERTDIR}/${ROOTCA}" ] || [ -e "${CERTNAME}".crt ] ; then continue; fi
-  echo "Generating new certificate '${CERTNAME}' ..."
+  if [ "${CERTNAME}" == "${CERTDIR}/${ROOTCA}" ] || [ -e "${CERTNAME}".csr ] ; then continue; fi
 
+  echo "Generating new private key and CSR for '${CERTNAME}' ..."
   openssl req -new -newkey rsa:2048 -keyout ${CERTNAME}.key -out ${CERTNAME}.csr -config ${CERTNAME}.cnf -nodes
-  openssl x509 -req -days ${DAYS} -in ${CERTNAME}.csr -CA ${CERTDIR}/${ROOTCA}.crt -CAkey ${CERTDIR}/${ROOTCA}.key -CAcreateserial -out ${CERTNAME}.crt -extfile ${CERTNAME}.cnf -extensions v3_req
 
-  # show certificate
-  echo
-  echo "############################"
-  echo "Created Certificate:"
-  openssl x509 -in ${CERTNAME}.crt -text -subject -issuer
+  if [[ "$PREPARE_CSR_ONLY" != "yes" ]]; then
+    echo "Generating new certificate for'${CERTNAME}' ..."
+    openssl x509 -req -days ${DAYS} -in ${CERTNAME}.csr -CA ${CERTDIR}/${ROOTCA}.crt -CAkey ${CERTDIR}/${ROOTCA}.key -CAcreateserial -out ${CERTNAME}.crt -extfile ${CERTNAME}.cnf -extensions v3_req
 
-  # Create PEM output required by some services
-  openssl pkcs12 -export -in ${CERTNAME}.crt -inkey ${CERTNAME}.key \
-  -chain -CAfile ${CERTDIR}/${ROOTCA}.pem \
-  -name $(echo ${i%.*} | cut -d '/' -f2) -out ${CERTNAME}.p12 -password pass:${PASSWD}
+    # show certificate
+    echo
+    echo "############################"
+    echo "Created Certificate:"
+    openssl x509 -in ${CERTNAME}.crt -text -subject -issuer
 
-  openssl pkcs12 -in ${CERTNAME}.p12 -out ${CERTNAME}.pem -passin pass:${PASSWD} -passout pass:${PASSWD}
+    # Create PEM output required by some services
+    openssl pkcs12 -export -in ${CERTNAME}.crt -inkey ${CERTNAME}.key \
+    -chain -CAfile ${CERTDIR}/${ROOTCA}.pem \
+    -name $(echo ${i%.*} | cut -d '/' -f2) -out ${CERTNAME}.p12 -password pass:${PASSWD}
 
-  # Create Java Key Store
-  keytool -importkeystore -deststorepass ${PASSWD} -destkeystore ${CERTNAME}.keystore.jks \
-    -srckeystore ${CERTNAME}.p12 \
-    -deststoretype PKCS12  \
-    -srcstoretype PKCS12 \
-    -noprompt \
-    -srcstorepass ${PASSWD}
+    openssl pkcs12 -in ${CERTNAME}.p12 -out ${CERTNAME}.pem -passin pass:${PASSWD} -passout pass:${PASSWD}
+
+    # Create Java Key Store
+    keytool -importkeystore -deststorepass ${PASSWD} -destkeystore ${CERTNAME}.keystore.jks \
+      -srckeystore ${CERTNAME}.p12 \
+      -deststoretype PKCS12  \
+      -srcstoretype PKCS12 \
+      -noprompt \
+      -srcstorepass ${PASSWD}
+  fi
 
 done
