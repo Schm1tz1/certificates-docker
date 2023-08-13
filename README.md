@@ -1,5 +1,5 @@
-### OpenSSL-based Certificate Creation in Docker
-This repo is used to create certificates by a trusted CA (either provided or generated here). Configuration will be completely done based on a Jinja2-template and a host configuration in YAML or JSON that is used for the certificate creation. Several key types, Java trust-/keystores will be created automatically in addition.
+### OpenSSL-based Certificate Preparation / Creation in Docker
+This repo is used to prepare (for signing with an external CA service) or create certificates by a trusted CA (either provided or generated in the same step). Configuration will be completely done based on a Jinja2-template and a host configuration in YAML or JSON that is used for the certificate creation. Several key types, Java trust-/keystores will be created automatically in addition.
 
 We are using a Docker-based approach to ensure that the correct versions are used (e.g. JDK 11, OpenSSL 3).
 
@@ -94,11 +94,12 @@ schmitzi/openssl-alpine-j11:1.0.0
 
 | Variable | Description | Default |
 |---|---|---|
+| PREPARE_CSR_ONLY  | Create private key and CSR only instead on generating the full certificates. This is iseful when preparing a CSR for external (paid) certificate services that require you to provide a CSR and will return the signed certificate. Valid values: yes/no | no |
 | PASSWD  | Password for keystores / containers | changeme! |
 | DAYS_CA | Validity for CA in days | 3650 |
 | DAYS | Validity for certificates in days | 389 |
 
-* Please note: Only new certificates will be created in th existing directory - if a .crt file exists already, it will not be overwritten !
+* Please note: Only new certificates will be created in the existing directory - if a .csr file exists already, it will not be overwritten !
 * How to provide an existing CA - simply put the following files in your certificate/output directory
     * `ca-root.crt`: certificate im PEM format
     * `ca-root.key`: private key (preferrably unencrypted)
