@@ -9,11 +9,22 @@ fi
 echo "Creating certificate configurations from template..."
 ./create_configs.py
 
-echo "Checking for existing root CA and creating one otherwise..."
-if [ -e /opt/certs/current/ca-root.crt ] ; then 
-    echo "Re-using CA that was provided !"
-else
-    ./gen_ca.sh
+if [[ "$PREPARE_CSR_ONLY" != "yes" ]]; then
+    if [ -e /opt/certs/current/ca-root.crt ] && [ -e /opt/certs/current/ca-root.key ]; then
+        echo "Re-using CA that was provided !"
+        ./check_ca.sh
+    elif [ -e /opt/certs/current/ca-root.crt ] || [ -e /opt/certs/current/ca-root.key ]; then
+        echo "ERROR: Missing CA Cert or Key file. Please provide both or none."
+        exit 1
+    else
+        echo "Generating new CA..."
+        ./gen_ca.sh
+    fi
+fi
+
+if [ $? -ne 0 ]; then
+    echo "Cannot create certificates. Check for previous errors and correct them before re-running the script"
+    exit 1
 fi
 
 echo "Creating certificates..."
