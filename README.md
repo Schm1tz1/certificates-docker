@@ -98,6 +98,7 @@ schmitzi/openssl-alpine-j11:1.0.0
 | PASSWD  | Password for keystores / containers | changeme! |
 | DAYS_CA | Validity for CA in days | 3650 |
 | DAYS | Validity for certificates in days | 389 |
+| CA_KEYPASSWD | Password for CA private key |  |
 
 * Please note: Only new certificates will be created in the existing directory - if a .csr file exists already, it will not be overwritten !
 * How to provide an existing CA - simply put the following files in your certificate/output directory

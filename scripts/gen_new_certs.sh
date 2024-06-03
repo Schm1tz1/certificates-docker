@@ -15,7 +15,12 @@ for i in ${CERTDIR}/*.cnf; do
 
   if [[ "$PREPARE_CSR_ONLY" != "yes" ]]; then
     echo "Generating new certificate for'${CERTNAME}' ..."
-    openssl x509 -req -days ${DAYS} -in ${CERTNAME}.csr -CA ${CERTDIR}/${ROOTCA}.crt -CAkey ${CERTDIR}/${ROOTCA}.key -CAcreateserial -out ${CERTNAME}.crt -extfile ${CERTNAME}.cnf -extensions v3_req
+
+    if [[ -z CA_KEYPASSWD ]]; then
+      openssl x509 -req -days ${DAYS} -in ${CERTNAME}.csr -CA ${CERTDIR}/${ROOTCA}.crt -CAkey ${CERTDIR}/${ROOTCA}.key -CAcreateserial -out ${CERTNAME}.crt -extfile ${CERTNAME}.cnf -extensions v3_req
+    else
+      openssl x509 -req -days ${DAYS} -in ${CERTNAME}.csr -CA ${CERTDIR}/${ROOTCA}.crt -CAkey ${CERTDIR}/${ROOTCA}.key -CAcreateserial -out ${CERTNAME}.crt -extfile ${CERTNAME}.cnf -extensions v3_req -passin pass:${CA_KEYPASSWD}
+    fi
 
     # show certificate
     echo
@@ -38,5 +43,12 @@ for i in ${CERTDIR}/*.cnf; do
       -noprompt \
       -srcstorepass ${PASSWD}
   fi
-
 done
+
+if [[ "$PREPARE_CSR_ONLY" != "yes" ]]; then
+  echo "Creating truststore..."
+  # Create truststore
+  keytool -keystore current/truststore.jks -alias CARoot \
+  -import -file current/ca-root.crt \
+  -storepass ${PASSWD} -noprompt -storetype PKCS12
+fi
