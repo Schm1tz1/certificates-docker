@@ -7,11 +7,13 @@ RUN apk update \
   && apk add --update bash openjdk11-jre-headless~11.0 openssl3 py3-jinja2 py3-yaml\
   && rm -rf /var/cache/apk/*
 
-RUN mkdir -p /opt/certs
+RUN mkdir -p /opt/scripts
 
-ADD *.sh /opt/certs/
-ADD create_configs.py /opt/certs/
-ADD cert.template /opt/certs/
-WORKDIR /opt/certs
+COPY *.sh /opt/scripts
+COPY create_configs.py /opt/scripts
+COPY cert.template /opt/scripts
 
-CMD ["/opt/certs/run.sh"]
+WORKDIR /opt/scripts
+ENV CERTDIR=/mnt/certs
+
+CMD ["/opt/scripts/run.sh"]

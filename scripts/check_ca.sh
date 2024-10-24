@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Check if the provided CA Key is "encrypted" - using the first line of the ca-root.key file
-first_line=$(head -n 1 /opt/certs/current/ca-root.key)
+first_line=$(head -n 1 /mnt/certs/ca-root.key)
 
 # Check if the first line contains "ENCRYPTED"
 if [[ "$first_line" == *"ENCRYPTED"* ]]; then
@@ -12,14 +12,14 @@ if [[ "$first_line" == *"ENCRYPTED"* ]]; then
 fi
 
 # Capture the modulus of the public certificate
-public_modulus=$(openssl x509 -modulus -noout -in /opt/certs/current/ca-root.crt 2>/dev/null | openssl md5)
+public_modulus=$(openssl x509 -modulus -noout -in /mnt/certs/ca-root.crt 2>/dev/null | openssl md5)
 
 if [[ -z "$CA_KEYPASSWD" ]]; then
     # Capture the modulus of the private key
-    private_modulus=$(openssl rsa -modulus -noout -in /opt/certs/current/ca-root.key 2>/dev/null | openssl md5)
+    private_modulus=$(openssl rsa -modulus -noout -in /mnt/certs/ca-root.key 2>/dev/null | openssl md5)
 else
     # Capture the modulus of the private key (with password)
-    private_modulus=$(openssl rsa -modulus -noout -in /opt/certs/current/ca-root.key -passin pass:$CA_KEYPASSWD 2>/dev/null | openssl md5)
+    private_modulus=$(openssl rsa -modulus -noout -in /mnt/certs/ca-root.key -passin pass:$CA_KEYPASSWD 2>/dev/null | openssl md5)
 fi
 
 # Compare the two modulis
@@ -28,4 +28,4 @@ if [ "$public_modulus" != "$private_modulus" ]; then
     exit 1
 fi
 
-cat current/ca-root.crt > current/ca-root.pem
+cat /mnt/certs/ca-root.crt > /mnt/certs/ca-root.pem

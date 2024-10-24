@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 echo "Checking for mandatory input files..."
-if [ ! -e /opt/certs/hosts.txt ] ; then 
-    echo "Mandatory file /opt/certs/hosts.txt is missing!"
+if [ ! -e /mnt/config/hosts.txt ] ; then 
+    echo "Mandatory file /mnt/config/hosts.txt is missing!"
     exit 1
 fi
 
@@ -10,10 +10,10 @@ echo "Creating certificate configurations from template..."
 ./create_configs.py
 
 if [[ "$PREPARE_CSR_ONLY" != "yes" ]]; then
-    if [ -e /opt/certs/current/ca-root.crt ] && [ -e /opt/certs/current/ca-root.key ]; then
+    if [ -e /mnt/certs/ca-root.crt ] && [ -e /mnt/certs/ca-root.key ]; then
         echo "Re-using CA that was provided !"
         ./check_ca.sh
-    elif [ -e /opt/certs/current/ca-root.crt ] || [ -e /opt/certs/current/ca-root.key ]; then
+    elif [ -e /mnt/certs/ca-root.crt ] || [ -e /mnt/certs/ca-root.key ]; then
         echo "ERROR: Missing CA Cert or Key file. Please provide both or none."
         exit 1
     else

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-CERTDIR="current"
 ROOTCA="ca-root"
 
 [[ -z "${DAYS}" ]] && echo "No validity for certs (DAYS) provided - using default 389" && DAYS="389"
@@ -48,7 +47,7 @@ done
 if [[ "$PREPARE_CSR_ONLY" != "yes" ]]; then
   echo "Creating truststore..."
   # Create truststore
-  keytool -keystore current/truststore.jks -alias CARoot \
-  -import -file current/ca-root.crt \
+  keytool -keystore /mnt/certs/truststore.jks -alias CARoot \
+  -import -file /mnt/certs/ca-root.crt \
   -storepass ${PASSWD} -noprompt -storetype PKCS12
 fi

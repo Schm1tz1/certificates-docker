@@ -83,11 +83,11 @@ Description of the fields:
 | CN_as_SAN | Add CN as SAN in addition (required by many clients/browsers) - true/false (default: true) |
 
 * Pull the docker image (from docker hub) or build locally with `./build_docker_image.sh`
-* Run the docker image - you need to mount the `hosts.txt` to `/opt/certs/hosts.txt` and a destination directory where the configs and certificates will be placed to `/opt/certs/current` - e.g.:
+* Run the docker image - you need to mount the `hosts.txt` to `/mnt/config/hosts.txt` and a destination directory where the configs and certificates will be placed to `/mnt/certs` - e.g.:
 ```bash
 docker run --rm \
--v $(pwd)/hosts.txt:/opt/certs/hosts.txt \
--v $(pwd)/certs:/opt/certs/current \
+-v $(pwd)/hosts.txt:/mnt/config/hosts.txt \
+-v $(pwd)/certs:/mnt/certs \
 schmitzi/openssl-alpine-j11:1.0.0
 ```
 * The following optional parameters can be provided as environment variables using `-e`:

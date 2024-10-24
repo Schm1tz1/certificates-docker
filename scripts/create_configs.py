@@ -3,7 +3,7 @@ import jinja2
 import yaml
 
 # Read hosts input and extract global settings
-with open('./hosts.txt') as input_file:
+with open('/mnt/config/hosts.txt') as input_file:
     hosts = yaml.load(input_file, Loader=yaml.FullLoader)
 globals = hosts['global'] if 'global' in hosts else {}
 
@@ -18,5 +18,5 @@ for host in hosts['certs']:
 
     output_filename = host['fileName']+'.cnf' if 'fileName' in host else host['CN']+'.cnf'
     
-    with open('./current/'+output_filename, "w") as out_file:
+    with open('/mnt/certs/'+output_filename, "w") as out_file:
         out_file.write(outputCertConfig)
